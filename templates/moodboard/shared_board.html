@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends "moodboard/based_loggedin.html" %}
+    {% block title %}{{ board.projectName }}{% endblock %}
+{% block head %}
+{% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="content">
+         <div class="gallery shared">
+                {% if board.picsContained.all %}
+                    <div class="project-name " id="{{ board.projectName }}"><h3 class="mdb-name">{{ board.projectName }} by {{ board.owner }}</h3>
+                            <button class="fit discover" id="fit">Fit</button>
+                    </div>
+                <div class="pictures">
+                    {% load static %}
+                        {% for image in board.picsContained.all|dictsortreversed:"uploaded_at" %}
+                            <div class="column" id="mdb{{ image.id }}">
+                                {% if image.image %}
+                                    <img src="{{ image.image.url }}">
+                                {% else %}
+                                    <img src="{{ image.url_img }}">
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                {% endif %}
+                 </div>
+         </div>
+        <div>
+{% endblock %}
+</body>
+</html>

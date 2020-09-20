@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% extends "moodboard/base.html" %}
+<body>
+{% block body %}
+    <div class="register">
+        <h3 class="mdb-name">Sign up</h3>
+        <form class="register" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" value="Register">Register</button>
+        </form>
+    </div>
+{% endblock %}
+</body>

@@ -1,0 +1,18 @@
+{% extends "moodboard/myboards.html" %}
+{% if boards %}
+    <a href="#">Create mood</a>
+    <form action="" method="post">
+        {{ createForm.as_p }}
+        {% csrf_token %}
+    <input type="submit" value="OK">
+    </form>
+        <div>
+        <form method="post" class="file-upload" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+{% else %}
+    <p>New Moodboard</p>
+{% endif %}

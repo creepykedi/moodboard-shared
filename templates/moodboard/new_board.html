@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends "moodboard/based_loggedin.html" %}
+    {% load static %}
+    {% block title %}New board{% endblock %}
+</head>
+<body>
+{% block body %}
+<div class="content bottom-m">
+    <div>
+        <h3 class="mdb-name add-image">New mood</h3>
+        <form action="" method="post">
+            {{ createForm.as_p }}
+            {% csrf_token %}
+            <button type="submit" value="OK">OK</button>
+    </form>
+    </div>
+</div>
+    <script src="{% static "moodboard/js/script.js" %}"></script>
+{% endblock %}
+</body>
+</html>

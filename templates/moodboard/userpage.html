@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends "moodboard/based_loggedin.html" %}
+    {% load static %}
+    {% block title %}{{user.username}} Profile{% endblock %}
+</head>
+<body>
+{% block body %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+ <div class="content">
+    <h2 class="mdb-name user">{{ user.username.capitalize }}'s User Page</h2>
+
+ <div class="project-name"> <div> </div>
+        <a class="update-board" href='{% url 'profile_change' %}'>Update</a>
+    </div>
+     <div class="profile-info five" id="margin-neg">
+        <p><span class="bold"> Username:</span> {{ user.username }}</p>
+        <p><span class="bold"> Email:</span> {{ user.email }}</p>
+        <p><span class="bold"> Joined:</span> {{ user.date_joined.date }}</p>
+    </div>
+    <h3 class="mdb-name bottom-m" id="smaller">You have {{ boards.count }} moodboards:</h3>
+             {% for board in boards %}
+          <div class="project-name" id="{{ board.projectName }}">
+                {% if  board.share_url %}
+                 <h5 class="mdb-name"><a href="https://themoodboard.herokuapp.com/shared/{{ board.share_url }}" class="jump-to">{{ board.projectName }}</a>
+                 {% else %}
+                <h5 class="mdb-name"><a href="{% url 'myboards' %}#{{ board.id }}" class="jump-to">{{ board.projectName }}</a>
+                 {% endif %}
+          </h5>
+              <div class="edit">
+                <a class="delete-board" href={% url 'delete_moodboard' board.id %}>Delete</a>
+              </div>
+          </div>
+             <div class="board-info">
+             <table class="board">
+                 <tbody>
+                 <tr><td class="padding"><a class="edit-board" href="{% url 'rename_moodboard'  board.id %}">Edit</a></td></tr>
+                     <tr><td>Images contained:</td> <td><p class="right">{{ board.picsContained.count }} </p></td> </tr>
+                     <tr>
+                         <td>Type:</td> {% if board.isPrivate %} <td><p class="right">Private</p>
+                         </td>
+                     {% else %}
+                        <td><p class="right">Public</p></td>
+                         </tr>
+                  {% endif %}
+                     <tr><td>Created on:</td> <td> <p class="right">{{ board.date_created.date }}</td></tr>
+                     <tr><td>Share link:</td>
+                         <td class="right">{% if  board.share_url %}
+                             <a class="sharelink" href="{% url 'shared_by_link' board.share_url %}"> Link </a> <a class="sharelink copyurl">Copy</a>
+                             {% else %} <a class="edit-board right link block" href={% url 'generate_url' board.id %}>generate url</a>
+                         {% endif %}</td></tr>
+                 </tbody>
+             </table>
+             </div>
+         </div>
+             {% endfor %}
+     <div class="separate">
+        <div class="upload">
+            <h3 class="mdb-name add-image">Add images</h3>
+            <form method="post" class="file-upload add-image" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ uplform.as_p }}
+                <button type="submit">Upload</button>
+         </form>
+        </div>
+     </div>
+    <script src="{% static "moodboard/js/script.js" %}"></script>
+{% endblock %}
+</body>
+</html>

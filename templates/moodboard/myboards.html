@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends "moodboard/based_loggedin.html" %}
+    {% block head %}
+    <meta
+      name="description"
+      content="List of image boards created by a user">{% endblock %}
+    {% block title %}{{ user.username }} boards{% endblock %}
+    {% load crispy_forms_tags %}
+</head>
+<body>
+{% block body %}
+{% if boards %}
+    <div class="content">
+         <div class="gallery">
+         {% for board in boards %}
+            <div class="project-name" id="{{ board.projectName }}">
+                <h3 class="mdb-name">{{ board.projectName }}</h3>
+                {% if board.picsContained.all %}
+                    {% if forloop.first %}
+                    <a class="hider hide">—</a> <a class="revealer hide">&#65291</a>
+                        <button id="add" class="add">Add Image</button>
+                            <button id="clear" class="clear hide">Clear</button>
+                            <button id="save" class="save hide">Save</button>
+                            <button class="fit" id="fit">Fit</button>
+                     {% else %}
+                        <a class="hider">—</a> <a class="revealer hide">&#65291</a>{% endif %}
+                </div>
+                        {% if forloop.first %}
+                         <div class="upload">
+                            <form method="post" id="upload" class="file-upload hide add-image" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ uplform.as_p }}
+                                <button type="submit">Upload</button>
+                            </form>
+                        </div>
+                            <div class="order hide">
+                                <div class="sort-button">
+                                    <label class="order-by">Order by:</label>
+                                    <button class="sorting" id="sort_name">Name</button>
+                                    <button class="sorting" id="sort_date">Date</button>
+                                    <button class="sorting" id="sort_img">Images</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                {% else %} </div>
+                {% endif %}
+                    {% load static %}
+                    {% if board.picsContained.all %}
+                        <div class="pictures {{ board.projectName }}">
+                        {% for image in board.picsContained.all|dictsortreversed:"uploaded_at" %}
+                            <div class="column" id="mdb{{ image.id }}">
+                            {% if image.image %}
+                                <img alt="{{ image.image }}" src="{{ image.image.url }}">
+                            {% else %}
+                                <img alt="linked-image" src="{{ image.url_img }}">
+                            {% endif %}
+                                <a class="rotate">&#8635</a>
+                                <a href={% url 'delete_from_moodboard' board.id image.id %} class="delete"><span class="closebtn">&times;</span></a>
+                            </div>
+                        {% endfor %}
+                </div>
+                    {% else %}
+                        <div>
+                        <p class="empty-board">No Images here yet.</p></div>
+                    {% endif %}
+         {% endfor %}
+         </div>
+        <div>
+
+{% else %}
+    <div class="empty center">
+        <p class="empty center">You have no moodboards yet.<a href="{% url 'new_board' %}">Create one.</a></p>
+    </div>
+        </div>
+{% endif %}
+<script src="{% static "moodboard/js/script.js" %}"></script>
+{% endblock %}
+</body>
+</html>

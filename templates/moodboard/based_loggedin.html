@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- base.html -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href={% static "moodboard/css/main.css" %}>
+        <link rel="shortcut icon" type="image/png" href="{% static 'moodboard/favicon.ico' %}"/>
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <a class="logo" href={% url 'index' %}>Moodboard</a>
+        <div class="menu-sandwich">
+            <svg width="24" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M46 14H2C0.9 14 0 14.9 0 16C0 17.1 0.9 18 2 18H46C47.1 18 48 17.1 48 16C48 14.9 47.1 14 46 14ZM2 4H46C47.1 4 48 3.1 48 2C48 0.9 47.1 0 46 0H2C0.9 0 0 0.9 0 2C0 3.1 0.9 4 2 4ZM46 28H2C0.9 28 0 28.9 0 30C0 31.1 0.9 32 2 32H46C47.1 32 48 31.1 48 30C48 28.9 47.1 28 46 28Z" fill="white"/>
+        </svg>
+        </div>
+        <!-- Sidenav menu -->
+        <div id="mySidenav" class="sidenav">
+          <a href="javascript:void(0)" class="closebtn">x</a>
+            <a class="dropdown-list" href={% url 'new_board' %}>New board</a>
+            <a class="dropdown-list" href={% url 'myboards' %}>My boards</a>
+            <a class="dropdown-list" href={% url 'userpage' %}>Profile</a>
+            <a class="dropdown-list" href={% url 'logout' %}>Logout</a>
+        </div>
+        <!-- Regular menu -->
+        <nav>
+            <ul class="nav-links">
+                <li><a href={% url 'discover' %}>Discover</a></li>
+                <li class="username dropdown">
+                    <a id="userlink" href={% url 'userpage' %}>{{user.username.capitalize}}</a>
+                    <div class="dropdown-content">
+                        <a class="dropdown-list" href={% url 'userpage' %}>Profile</a>
+                        <a class="dropdown-list" href={% url 'logout' %}>Logout</a>
+                    </div>
+                </li>
+                <li><a href={% url 'new_board' %}>New board</a></li>
+                <li class="dropdown"><a href={% url 'myboards' %}>My boards</a>
+                    <div class="dropdown-content">
+                        <a class="dropdown-list" href="{% url 'myboards' %}?sort_name=True">Sort by name</a>
+                        <a class="dropdown-list" href="{% url 'myboards' %}?sort_name_desc=True">Sort by name &#8595;</a>
+                        <a class="dropdown-list" href="{% url 'myboards' %}?sort_date=True">Sort by date</a>
+                        <a class="dropdown-list" href="{% url 'myboards' %}?sort_date_desc=True">Sort by date &#8595;</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    {% block body %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+
+</body>
+</html>

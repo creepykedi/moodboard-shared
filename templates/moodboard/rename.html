@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends "moodboard/based_loggedin.html" %}
+    {% load static %}
+    {% block title %}Edit moodboard{% endblock %}
+</head>
+<body>
+{% block body %}
+    <h3 class="mdb-name add-image">Edit moodboard</h3>
+        <form method="post" class="file-upload add-image" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Save</button>
+         </form>
+    <script src="{% static "moodboard/js/script.js" %}"></script>
+{% endblock %}
+</body>
+</html>

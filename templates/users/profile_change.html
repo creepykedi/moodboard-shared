@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends "moodboard/base.html" %}
+    {% block title %}Update profile{% endblock %}
+    {% load crispy_forms_tags %}
+</head>
+<body>
+   {% block body %}
+    <div class="project-name">
+        <form method="post">
+            {% csrf_token %}
+            {{userUpdate|crispy}}
+            <button type="submit" value="OK">Update</button>
+        </form>
+    </div>
+{% endblock %}
+</body>
+</html>

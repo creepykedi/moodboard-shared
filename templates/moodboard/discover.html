@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+      name="description"
+      content="Page to discover picture albums created by users">
+    {% extends "moodboard/based_loggedin.html" %}
+    {% block title %}Discover moodboards{% endblock %}
+{% block head %}
+{% endblock %}
+</head>
+<body>
+{% block body %}
+{% if boards %}
+    <div class="content">
+    <h2 class="mdb-name user">Discover boards</h2>
+
+         <form method="GET" action="">
+             <div>
+                <input class="form-control search" type="search" id="search-boards"
+                       name="projectName_contains" placeholder="Search board or user" />
+                <input class="search" type="submit" value="Search">
+             </div>
+
+         </form>
+
+         <div class="gallery discover">
+         {% for board in boards %}
+                {% if board.picsContained.all %}
+                    <div class="project-name" id="{{ board.projectName }}"><h3 class="mdb-name">{{ board.projectName }} by {{ board.owner }}</h3>
+                    {% if forloop.first %}
+                            <button class="fit discover" id="fit">Fit</button>
+                    {% endif %}
+                 </div>
+                {% endif %}
+                <div class="pictures">
+                    {% load static %}
+                    {% if board.picsContained.all %}
+                        {% for image in board.picsContained.all|dictsortreversed:"uploaded_at" %}
+                            <div class="column" id="mdb{{ image.id }}">
+                                {% if image.image %}
+                                    <img src="{{ image.image.url }}">
+                                {% else %}
+                                    <img src="{{ image.url_img }}">
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                {% endif %}
+                 </div>
+         {% endfor %}
+         </div>
+        <div>
+    {% else %}
+     <div class="content">
+        <h2 class="mdb-name user">Discover boards</h2>
+
+         <form method="GET" action="">
+             <div>
+                <input class="form-control search" type="search" id="search-boards"
+                       name="projectName_contains" placeholder="Search board or user" />
+                <input class="search" type="submit" value="Search">
+             </div>
+         </form>
+    <h3>No results found</h3>
+     </div>
+    {% endif %}
+    <script src="{% static "moodboard/js/script.js" %}"></script>
+{% endblock %}
+</body>
+</html>

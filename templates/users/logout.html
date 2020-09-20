@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login page</title>
+    {% extends "moodboard/base.html" %}
+</head>
+<body>
+
+{% block body %}
+{% if user.is_authenticated %}
+    <p>You are logged in as {{ user.username }}.</p>
+{% else %}
+    <h3 class="mdb-name">Login</h3>
+    <form method="post" class="register" action="{% url 'login' %}">
+{% csrf_token %}
+
+<table>
+<tr class="log-pad">
+    <td>{{ form.username.label_tag }}</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr class="log-pad">
+    <td>{{ form.password.label_tag }}</td>
+    <td>{{ form.password }}</td>
+</tr>
+</table>
+     <button type="submit" value="login" class="btn success">Login</button></form>
+    {% endif %}
+{% endblock %}
+</body>
+</html>
